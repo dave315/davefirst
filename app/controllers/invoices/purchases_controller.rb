@@ -1,18 +1,17 @@
-class PurchasesController < ApplicationController
-  before_action :set_purchase, only: [:show, :edit, :update, :destroy]
+class Invoices::PurchasesController < ApplicationController
 
   respond_to :html
 
   def index
     @purchases = Purchase.all
-    respond_with(@purchases)
   end
 
   def show
-    respond_with(@purchase)
+ respond_with(@purchase)
   end
 
   def new
+    @invoice = Invoice.find(params[:invoice_id])
     @purchase = Purchase.new
     respond_with(@purchase)
   end
@@ -21,14 +20,17 @@ class PurchasesController < ApplicationController
   end
 
   def create
+    @invoice = Invoice.find(params[:invoice_id])
     @purchase = Purchase.new(purchase_params)
-    @purchase.save
+    @purchase.invoice = @invoice
+    
+   @purchase.save
     respond_with(@purchase)
-  end
-
+end
   def update
     @purchase.update(purchase_params)
     respond_with(@purchase)
+  
   end
 
   def destroy
